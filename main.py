@@ -1,6 +1,12 @@
 from fastapi import FastAPI
+from starlette.responses import JSONResponse
 
 app = FastAPI()
+tasks = [
+    {"id": 1, "title": "Learn Django", "done": False},
+    {"id": 2, "title": "Get Hired", "done": False},
+    {"id": 3, "title": "Feed Maku", "done": True}
+]
 
 @app.get("/health")
 async def health():
@@ -15,3 +21,24 @@ async def root_meta_data():
         ]
     }
 
+@app.get("/tasks")
+async def get_tasks():
+    return tasks
+
+@app.get("/tasks/{id}")
+async def get_tasks_by_id(id: int):
+    for task in tasks:
+        if task["id"] == id:
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "task": task
+                }
+            )
+
+    return JSONResponse(
+        status_code=404,
+        content={
+            "error": f"Task {id} not found"
+        }
+    )
