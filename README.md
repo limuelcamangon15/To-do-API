@@ -1,7 +1,3 @@
-Here’s a clean, beginner-friendly `README.md` for your FastAPI To-do API. It documents the endpoints, setup, examples, and current behavior of your implementation.
-
- README.md
-
 # To-do API
 
  A simple RESTful To-do API built with **FastAPI** and **Python**.
