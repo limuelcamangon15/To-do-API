@@ -42,3 +42,28 @@ async def get_tasks_by_id(id: int):
             "error": f"Task {id} not found"
         }
     )
+
+@app.post("/tasks")
+async def create_task(title: str):
+    if not title.strip():
+        return JSONResponse(
+            status_code=400,
+            content={
+                "error": "Title cannot be empty"
+            }
+        )
+
+    if len(tasks) == 0:
+        task_id = 1
+    else:
+        task_id = tasks[-1]["id"] + 1
+
+    new_task = {"id": task_id, "title": title, "done": False}
+    tasks.append(new_task)
+
+    return JSONResponse(
+        status_code=201,
+        content={
+            "new_task": new_task
+        }
+    )
