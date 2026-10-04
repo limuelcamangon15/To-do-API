@@ -67,3 +67,27 @@ async def create_task(title: str):
             "new_task": new_task
         }
     )
+
+@app.put("/tasks/{id}")
+async def update_task(id: int, title: str, done: bool):
+    if not title.strip():
+        return JSONResponse(status_code=400, content={"error": "Title cannot be empty"})
+
+    for task in tasks:
+        if task["id"] == id:
+            task["title"] = title
+            task["done"] = done
+
+            return JSONResponse(status_code=200, content={"updated_task": task})
+
+    return JSONResponse(status_code=404, content={"error": "Task not found"})
+
+@app.delete("/tasks/{id}")
+async def delete_task(id: int):
+    for task in tasks:
+        if task["id"] == id:
+            tasks.remove(task)
+
+            return JSONResponse(status_code=204, content={})
+
+    return JSONResponse(status_code=404, content={"error": "Task does not exist"})
